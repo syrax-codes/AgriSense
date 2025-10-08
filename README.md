@@ -24,3 +24,4 @@ Goals:
 - MVP: parcel-level risk score using NDVI-like timeseries + weather features and XGBoost
 - Next: Hook into GEE + OpenWeatherMap, add PostGIS storage, refine scoring
 
+
