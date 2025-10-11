@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSecure Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #17cf17; --background-light: #f6f8f6; --text-light: #1f2937; --card-light: #ffffff; --border-light: #e5e7eb; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--background-light); color: var(--text-light); margin: 0; padding: 2rem; }
+        .container { max-width: 900px; margin: auto; }
+        .page-header h2 { font-size: 2.25rem; font-weight: 700; margin: 0; }
+        .page-header p { color: #6b7280; margin-top: 0.5rem; margin-bottom: 2rem; }
+        .controls { display: flex; gap: 1.5rem; align-items: flex-end; margin-bottom: 2.5rem; }
+        .control-group { flex-grow: 1; max-width: 300px; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        select { width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--border-light); background-color: var(--card-light); font-size: 1rem; }
+        button { padding: 0.75rem 1.5rem; border-radius: 0.5rem; background-color: var(--primary-color); color: white; font-weight: 600; border: none; cursor: pointer; transition: background-color 0.2s; }
+        button:hover:not(:disabled) { background-color: #14a714; }
+        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .card { background-color: var(--card-light); border: 1px solid var(--border-light); padding: 1.5rem; border-radius: 0.75rem; }
+        .card-title { font-size: 0.875rem; color: #6b7280; margin: 0; }
+        .card-value { font-size: 2.25rem; font-weight: 700; margin-top: 0.25rem; }
+        .card-sub-value { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+        .card-unit { font-size: 1rem; font-weight: 500; color: #6b7280; margin-left: 0.25rem; }
+        .risk-low { color: #16a34a; } .risk-medium { color: #f59e0b; } .risk-high { color: #ef4444; }
+        .error { color: #ef4444; font-weight: bold; }
+        .explanation-card { margin-top: 1.5rem; grid-column: 1 / -1; }
+        .explanation-card-title { font-weight: 600; font-size: 1rem; margin-top: 0; margin-bottom: 1rem; }
+        .explanation-text { margin: 0.5rem 0; line-height: 1.6; color: #4b5563; font-size: 0.9rem;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header"><h2>Crop Yield Dashboard</h2><p>Analysis and predictions for your farm's productivity.</p></header>
+        <form method="POST" action="/" class="controls">
+            <div class="control-group"><label for="district-select">Select District</label><select id="district-select" name="district"><option value="">-- Select --</option>{% for d in districts %}<option value="{{ d }}" {% if d == selected_district %}selected{% endif %}>{{ d }}</option>{% endfor %}</select></div>
+            <div class="control-group"><label for="crop-select">Select Crop</label><select id="crop-select" name="crop" disabled><option value="">-- Select District First --</option></select></div>
+            <button id="predict-btn" type="submit" disabled>Generate Report</button>
+        </form>
+
+        {% if prediction_data %}
+            {% if prediction_data.error %}
+                <div class="card"><p class="card-title">Error</p><p class="card-value error">{{ prediction_data.error }}</p></div>
+            {% else %}
+                <div class="results-grid">
+                    <div class="card"><p class="card-title">Predicted Yield (ML Model)</p><p class="card-value">{{ prediction_data.predicted_yield }} <span class="card-unit">tonnes/ha</span></p><p class="card-sub-value">vs. Historical Avg: {{ summary_data.avg_yield }} tonnes/ha</p></div>
+                    <div class="card"><p class="card-title">Risk Level</p><p class="card-value risk-{{ prediction_data.risk_level.lower() }}">{{ prediction_data.risk_level }}</p><p class="card-sub-value">Based on yield & current NDVI</p></div>
+                    <div class="card"><p class="card-title">Historical Min Yield</p><p class="card-value">{{ summary_data.min_yield }} <span class="card-unit">tonnes/ha</span></p></div>
+                    <div class="card"><p class="card-title">Historical Max Yield</p><p class="card-value">{{ summary_data.max_yield }} <span class="card-unit">tonnes/ha</span></p></div>
+                    <div class="card"><p class="card-title">Current Avg. NDVI</p><p class="card-value">{{ prediction_data.current_avg_ndvi }}</p><p class="card-sub-value">Measure of current vegetation health.</p></div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if prediction_data and not prediction_data.error %}
+            <div class="card explanation-card">
+                <h3 class="explanation-card-title">What the Risk Levels Mean</h3>
+                <p class="explanation-text">🟢 <strong>Low:</strong> Predicted yield is at or above historical average, and current vegetation health (NDVI) is good.</p>
+                <p class="explanation-text">🟡 <strong>Medium:</strong> A warning sign. Predicted yield is slightly below average, OR current NDVI indicates some vegetation stress.</p>
+                <p class="explanation-text">🔴 <strong>High:</strong> A strong alert. Predicted yield is significantly below average, indicating a high probability of a poor harvest.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const districtSelect = document.getElementById('district-select');
+            const cropSelect = document.getElementById('crop-select');
+            const predictBtn = document.getElementById('predict-btn');
+            const fetchCrops = async (district) => {
+                if (!district) { cropSelect.innerHTML = '<option value="">-- Select District First --</option>'; cropSelect.disabled = true; return; }
+                cropSelect.innerHTML = '<option value="">-- Loading... --</option>'; cropSelect.disabled = true;
+                const response = await fetch(`/api/crops_for_district?district=${district}`);
+                const crops = await response.json();
+                cropSelect.innerHTML = '<option value="">-- Select Crop --</option>';
+                crops.forEach(crop => { cropSelect.add(new Option(crop, crop)); });
+                cropSelect.disabled = false;
+            };
+            districtSelect.addEventListener('change', () => { fetchCrops(districtSelect.value); predictBtn.disabled = true; });
+            cropSelect.addEventListener('change', () => { predictBtn.disabled = !cropSelect.value; });
+            const initialDistrict = "{{ selected_district }}"; const initialCrop = "{{ selected_crop }}";
+            if (initialDistrict) { fetchCrops(initialDistrict).then(() => { cropSelect.value = initialCrop; if (initialCrop) { predictBtn.disabled = false; } }); }
+        });
+    </script>
+</body>
+</html>
