@@ -83,19 +83,49 @@
             const districtSelect = document.getElementById('district-select');
             const cropSelect = document.getElementById('crop-select');
             const predictBtn = document.getElementById('predict-btn');
+
             const fetchCrops = async (district) => {
-                if (!district) { cropSelect.innerHTML = '<option value="">-- Select District First --</option>'; cropSelect.disabled = true; return; }
-                cropSelect.innerHTML = '<option value="">-- Loading... --</option>'; cropSelect.disabled = true;
+                if (!district) {
+                    cropSelect.innerHTML = '<option value="">-- Select District First --</option>';
+                    cropSelect.disabled = true;
+                    return;
+                }
+                cropSelect.innerHTML = '<option value="">-- Loading Crops... --</option>';
+                cropSelect.disabled = true;
+
                 const response = await fetch(`/api/crops_for_district?district=${district}`);
                 const crops = await response.json();
+
                 cropSelect.innerHTML = '<option value="">-- Select Crop --</option>';
-                crops.forEach(crop => { cropSelect.add(new Option(crop, crop)); });
+                crops.forEach(crop => {
+                    const option = new Option(crop, crop);
+                    cropSelect.add(option);
+                });
                 cropSelect.disabled = false;
             };
-            districtSelect.addEventListener('change', () => { fetchCrops(districtSelect.value); predictBtn.disabled = true; });
-            cropSelect.addEventListener('change', () => { predictBtn.disabled = !cropSelect.value; });
-            const initialDistrict = "{{ selected_district }}"; const initialCrop = "{{ selected_crop }}";
-            if (initialDistrict) { fetchCrops(initialDistrict).then(() => { cropSelect.value = initialCrop; if (initialCrop) { predictBtn.disabled = false; } }); }
+
+            districtSelect.addEventListener('change', () => {
+                fetchCrops(districtSelect.value);
+                predictBtn.disabled = true;
+            });
+
+            cropSelect.addEventListener('change', () => {
+                predictBtn.disabled = !cropSelect.value;
+            });
+
+            // This block correctly handles the state of the dropdowns after the page reloads
+            const initialDistrict = "{{ selected_district }}";
+            const initialCrop = "{{ selected_crop }}";
+            if (initialDistrict) {
+                fetchCrops(initialDistrict).then(() => {
+                    // Once the crops are loaded, set the correct selection
+                    cropSelect.value = initialCrop;
+                    // If a crop was previously selected, enable the button
+                    if (initialCrop) {
+                        predictBtn.disabled = false;
+                    }
+                });
+            }
         });
     </script>
 </body>
