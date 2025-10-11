@@ -1,4 +1,4 @@
-# app.py (Final Version without Gemini)
+# app.py (Final Version - No WeasyPrint)
 
 import pandas as pd
 from flask import Flask, request, render_template, jsonify
@@ -7,11 +7,13 @@ import os
 from datetime import datetime
 import numpy as np
 
+# REMOVED: from weasyprint import HTML
+
 from src.utils.satellite_data import get_ndvi_for_location
 
 app = Flask(__name__)
 
-# --- LOAD ALL FILES AT STARTUP ---
+# --- The rest of your setup code is the same ---
 try:
     model = joblib.load("models/yield_prediction_model.joblib")
     model_columns = joblib.load("models/model_columns.pkl")
@@ -79,6 +81,8 @@ def get_crops_for_district_api():
         crops = sorted(yield_df[yield_df['District'] == district.upper()]['Crop'].unique().tolist())
         return jsonify(crops)
     return jsonify([])
+
+# --- The '/generate-pdf' route has been completely removed ---
 
 if __name__ == '__main__':
     app.run(debug=True)
