@@ -1,45 +1,12 @@
-# --- Python cache and environment ---
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.py.class
-*.so
-*.egg-info/
+# Virtual Environment
 venv/
-.env
-.DS_Store
+.venv/
 
-# --- Jupyter and logs ---
-.ipynb_checkpoints/
-*.log
-logs/
+# Python cache
+__pycache__/
+*.pyc
 
-# --- VS Code settings ---
+# IDE and OS files
 .vscode/
-.settings/
-
-# --- OS files ---
-Thumbs.db
-desktop.ini
-
-# --- Environment and secrets ---
-.env
-.env.*
-*.key
-*.json
-credentials.json
-
-# --- Data and temporary files ---
-data/
-tmp/
-output/
-*.csv
-*.xlsx
-*.db
-
-# --- Build / distribution ---
-build/
-dist/
-*.egg
-*.egg-info/
+.idea/
+.DS_Store
