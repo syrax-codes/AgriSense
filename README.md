@@ -78,11 +78,11 @@ Drive Link For The Generated Report By Our Yield Predictor Model: https://drive.
 Drive Link For Video-Submission: https://drive.google.com/drive/folders/1WehjKgnU8uZ053naKf6Dx9XbqMwTxeJq?usp=drive_link
 
 
-Team Roles
-Abhiraj Dhananjay - Lead ML Engineer (RandomForest Model) & Full-Stack Development
-Abhinav Bora - Backend Development & Jupyter Notebook Prototyping (XGBoost Models)
-Santosh Balla - Backend Development & Data Engineering
-Aditya Vashisht - Frontend Development & UI/UX Design, pitch deck design
-Aarohi Jaiswal - Frontend Development & Video Editing, pitch deck design
-Abhay Kulkarni - ML Engineer & Data Analysis
+#### Team Roles
+- **Abhiraj Dhananjay** - Lead ML Engineer (RandomForest Model) & Full-Stack Development
+- **Abhinav Bora** - Backend Development & Jupyter Notebook Prototyping (XGBoost Models)
+- **Santosh Balla** - Backend Development & Data Engineering
+- **Aditya Vashisht** - Frontend Development & UI/UX Design, pitch deck design
+- **Aarohi Jaiswal** - Frontend Development & Video Editing, pitch deck design
+- **Abhay Kulkarni** - ML Engineer & Data Analysis
 
