@@ -59,3 +59,13 @@ To explore our research and reproduce the models:
 
 Drive Link For The Generated Report By Our Yield Predictor Model: https://drive.google.com/drive/folders/1HWuuMQhuipM23CtAWg76T_BapTH9oJMi?usp=drive_link
 Drive Link For Video-Submission: https://drive.google.com/drive/folders/1WehjKgnU8uZ053naKf6Dx9XbqMwTxeJq?usp=drive_link
+
+
+TEAM ROLES 
+
+Abhinav Bora    - jupyter and backend 
+Santosh Balla   - data analysis and backend 
+Aditya Vashisht - editing and frontend 
+Aarohi Jaiswal  - editing and frontend 
+Abhay kulkarni  - ML and data analysis
+Abhiraj Dhananjay - ML and data analysis
