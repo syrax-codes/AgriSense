@@ -57,4 +57,5 @@ To explore our research and reproduce the models:
 * **historical_data_2010-2020.csv**: The source for historical crop yield statistics.
 * **satellite_data_all_districts.csv**: The source for time-series of daily NDVI (vegetation health) values.
 
-Drive Link For The Generated Report By Our Yield Predictor Model: https://drive.google.com/drive/folders/1WehjKgnU8uZ053naKf6Dx9XbqMwTxeJq?usp=drive_link
+Drive Link For The Generated Report By Our Yield Predictor Model: https://drive.google.com/drive/folders/1HWuuMQhuipM23CtAWg76T_BapTH9oJMi?usp=drive_link
+Drive Link For Video-Submission: https://drive.google.com/drive/folders/1WehjKgnU8uZ053naKf6Dx9XbqMwTxeJq?usp=drive_link
