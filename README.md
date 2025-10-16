@@ -54,8 +54,9 @@ The notebooks provide a deep, visual exploration of the data and our modeling jo
 
 * *How to Overcome Data Challenges:* We document the process of cleaning and reshaping complex, real-world government data.
 * *The Power of Data Fusion:* We prove that integrating satellite (NDVI) data with historical records significantly improves prediction accuracy. This is demonstrated by comparing two XGBoost models:
-    1.  *A Baseline Model* using only historical data.
+    1.  *A Baseline Model* using only historical data. 
     2.  *An Enhanced Model* that incorporates the new satellite features.
+Our first model gave us a near-perfect R-squared of 0.99, which was a red flag. We discovered this was due to data leakage. This critical insight allowed us to build a more honest and realistic baseline model, which gave us a solid starting point. 
 * *The Path to a Complete Solution:* The notebooks also explore advanced capabilities like *Explainable AI (SHAP)* for transparency, *Anomaly Detection* for real-time monitoring, and *Forecasting* for future insights, laying out a clear roadmap for future development.
 
 ### How to Run the Analysis Notebooks
@@ -67,11 +68,17 @@ To explore our research and reproduce the models:
 3.  Navigate to the directory.
 4.  Open and run the Jupyter Notebooks sequentially.
 
----
 ## Datasets Used for jupyter notebooks
 
 * **historical_data_2010-2020.csv**: The source for historical crop yield statistics.
 * **satellite_data_all_districts.csv**: The source for time-series of daily NDVI (vegetation health) values.
+
+##Alignment with IBM’s Vision
+
+While these notebooks were developed independently, our methodology aligns with IBM’s AI and data ethics philosophy — particularly in transparency, bias mitigation, and explainability.
+In future iterations, this system could be seamlessly extended using IBM Cloud Pak for Data or WatsonX.ai for enterprise-grade deployment, automated data governance, and large-scale analytics integration.
+Such alignment underscores how AgriSense can evolve into a globally deployable, IBM-compatible AI framework for sustainable agriculture.
+---
 
 Drive Link For The Generated Report By Our Yield Predictor Model: https://drive.google.com/drive/folders/1HWuuMQhuipM23CtAWg76T_BapTH9oJMi?usp=drive_link
 
